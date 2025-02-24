@@ -13,8 +13,8 @@ import { Public } from '../../../shared/decorators/auth.decorator';
 import { UuidParam } from '../../../shared/decorators/uuid-param.decorator';
 import { ApiPaginationQuery } from '../../../shared/decorators/api-pagination-query.decorator';
 import { LoggedInUserIdDecorator } from '../../../shared/decorators/logged-in-user-id.decorator';
-import { DataBaseInterceptorDecorator } from '../../../shared/decorators/database-interceptor.decorator';
 
+import type { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { CreateUserDTO } from '../dtos/create-user.dto';
 import { UpdateUserDTO } from '../dtos/update-user.dto';
@@ -27,7 +27,6 @@ export class UserController {
 
   @Public()
   @ApiPaginationQuery()
-  @DataBaseInterceptorDecorator()
   @Get('paginate')
   async paginate(@Query() querys: PaginateUsersDTO) {
     return this.userService.paginateUsers(querys);
@@ -35,31 +34,29 @@ export class UserController {
 
   @Public()
   @Get(':id')
-  async getOne(@UuidParam('id') id: string) {
+  async getOne(@UuidParam('id') id: User['id']) {
     return this.userService.getUserById(id, false);
   }
 
   @Public()
-  @DataBaseInterceptorDecorator()
   @Post('')
   async create(@Body() body: CreateUserDTO) {
     return this.userService.createUser(body);
   }
 
-  @DataBaseInterceptorDecorator()
   @Put(':id')
   async update(
-    @UuidParam('id') id: string,
+    @UuidParam('id') id: User['id'],
     @Body() payload: UpdateUserDTO,
-    @LoggedInUserIdDecorator() logged_in_user_id: string,
+    @LoggedInUserIdDecorator() logged_in_user_id: User['id'],
   ) {
     return this.userService.updateUser(id, payload, logged_in_user_id);
   }
 
   @Delete(':id')
   async delete(
-    @UuidParam('id') id: string,
-    @LoggedInUserIdDecorator() logged_in_user_id: string,
+    @UuidParam('id') id: User['id'],
+    @LoggedInUserIdDecorator() logged_in_user_id: User['id'],
   ) {
     return this.userService.deleteUser(id, logged_in_user_id);
   }

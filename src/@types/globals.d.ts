@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import type { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import type {
+  IPaginationOptions,
+  Pagination,
+  IPaginationMeta,
+} from 'nestjs-typeorm-paginate';
 
 import type { EnvType } from 'src/config/env.config';
+import type { User } from 'src/modules/user/entities/user.entity';
 
 declare global {
   namespace NodeJS {
@@ -34,7 +39,7 @@ declare global {
   > = T extends `${Prefix}${infer Rest}` ? Rest : T;
 
   export interface IJwtPayload {
-    id: string;
+    id: User['id'];
   }
 
   export interface DecodedTokenType extends IJwtPayload {
@@ -49,6 +54,8 @@ declare global {
       limit: number;
       page: number;
     };
+
+  export type PaginatedResult<T> = Pagination<T, IPaginationMeta>;
 
   type NonNullableObject<Obj extends object> = {
     [K in keyof Obj as Obj[K] extends null | undefined

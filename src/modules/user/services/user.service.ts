@@ -1,26 +1,16 @@
 import { del } from '@vercel/blob';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 
-import {
-  applyQueryFilters,
-  applySortingFilter,
-} from '../../../utils/apply-query-filters.utils';
 import { PostService } from '../../post/services/post.service';
-import { PaginationService } from '../../../lib/pagination/pagination.service';
-import { NotFoundError } from '../../../lib/http-exceptions/errors/types/not-found-error';
 
-import {
-  User,
-  alias,
-  base_fields,
-  type UserSelectKey,
-} from '../entities/user.entity';
+import type { User } from '../entities/user.entity';
+import { UserDomainService } from './user-domain.service';
+import { UserRepository } from '../repositories/user.repository';
 import type { CreateUserPayload } from '../dtos/create-user.dto';
 import type { UpdateUserPayload } from '../dtos/update-user.dto';
 import type { PaginateUsersPayload } from '../dtos/paginate-users.dto';
@@ -29,62 +19,29 @@ import type { PaginateUsersPayload } from '../dtos/paginate-users.dto';
 export class UserService {
   constructor(
     private readonly postService: PostService,
-    private readonly paginationService: PaginationService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly userDomainService: UserDomainService,
+    private readonly userRepository: UserRepository,
   ) {}
 
-  private createUserQueryBuilder(selectPassword?: boolean) {
-    const baseQueryBuilder = this.userRepository.createQueryBuilder(alias);
-
-    if (selectPassword) {
-      baseQueryBuilder.select([
-        ...base_fields,
-        'user.hashed_password',
-      ] as UserSelectKey[]);
-    } else {
-      baseQueryBuilder.select(base_fields);
-    }
-
-    return baseQueryBuilder;
-  }
-
-  async paginateUsers({
-    limit,
-    page,
-    sort,
-    ...userPayload
-  }: PaginateUsersPayload) {
-    const queryBuilder = this.createUserQueryBuilder();
-
-    applyQueryFilters(alias, queryBuilder, userPayload, {
-      user_name: 'LIKE',
-      user_email: '=',
-    });
-
-    applySortingFilter(alias, queryBuilder, sort);
-
-    return this.paginationService.paginateWithQueryBuilder(queryBuilder, {
-      limit,
-      page,
-    });
+  async paginateUsers(data: PaginateUsersPayload) {
+    return this.userRepository.paginateUsers(data);
   }
 
   async getUserByEmail(user_email: string, selectPassword = true) {
-    const user = await this.createUserQueryBuilder(selectPassword)
-      .where(`${alias}.user_email = :user_email`, { user_email })
-      .getOne();
+    const user = await this.userRepository.findUserByEmail(
+      user_email,
+      selectPassword,
+    );
 
-    if (!user) throw new NotFoundError('Email is not valid!');
+    if (!user) throw new NotFoundException('Email is not valid!');
 
     return user;
   }
 
-  async getUserById(id: string, selectPassword?: boolean) {
-    const user = await this.createUserQueryBuilder(selectPassword)
-      .where(`${alias}.id = :id`, { id })
-      .getOne();
+  async getUserById(id: User['id'], selectPassword = false) {
+    const user = await this.userRepository.findUserById(id, selectPassword);
 
-    if (!user) throw new NotFoundError('User not found!');
+    if (!user) throw new NotFoundException('User not found!');
 
     return user;
   }
@@ -98,8 +55,8 @@ export class UserService {
   }
 
   private async getUserAndCheckPermission(
-    id: string,
-    logged_in_user_id: string,
+    id: User['id'],
+    logged_in_user_id: User['id'],
   ) {
     const user = await this.getUserById(id);
 
@@ -109,15 +66,15 @@ export class UserService {
   }
 
   async createUser(payload: CreateUserPayload) {
-    const userToCreate = await User.create(payload);
+    const userToCreate = await this.userDomainService.createUserEntity(payload);
 
-    return this.userRepository.save(userToCreate);
+    return this.userRepository.saveUser(userToCreate);
   }
 
   async updateUser(
-    id: string,
+    id: User['id'],
     payload: UpdateUserPayload,
-    logged_in_user_id: string,
+    logged_in_user_id: User['id'],
   ) {
     const userToUpdate = await this.getUserAndCheckPermission(
       id,
@@ -128,12 +85,15 @@ export class UserService {
       await del(userToUpdate.user_photo_url);
     }
 
-    const userItem = await User.update(payload, userToUpdate.hashed_password);
+    const userItem = await this.userDomainService.updateUserEntity(
+      payload,
+      userToUpdate.hashed_password,
+    );
 
     return this.userRepository.update(userToUpdate.id, userItem);
   }
 
-  async deleteUser(id: string, logged_in_user_id: string) {
+  async deleteUser(id: User['id'], logged_in_user_id: User['id']) {
     const userToDelete = await this.getUserAndCheckPermission(
       id,
       logged_in_user_id,
@@ -159,7 +119,7 @@ export class UserService {
         userToDelete.user_photo_url
           ? del(userToDelete.user_photo_url)
           : undefined,
-        this.userRepository.delete(userToDelete.id),
+        this.userRepository.deleteUserById(userToDelete.id),
         this.postService.handleDeleteUserLikes(userToDelete.id),
       ]);
 
