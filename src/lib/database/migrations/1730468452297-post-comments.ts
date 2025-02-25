@@ -8,7 +8,7 @@ import {
 
 import { postContentMaxLength } from '../../../modules/post/entities/post.entity';
 
-import { baseColumns } from '../entities/base-columns';
+import { baseColumns } from '../common/base-columns.common';
 
 export class PostComments1730468452297 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

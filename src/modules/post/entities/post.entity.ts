@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 import { User } from '../../user/entities/user.entity';
-import { Base } from '../../../lib/database/entities/base.entity';
+import { BaseEntity } from '../../../lib/database/entities/base.entity';
 import { PostLike } from '../../post-like/entities/post-like.entity';
 import {
   PostComment,
@@ -21,7 +21,7 @@ import type { UpdatePostPayload } from '../dtos/update-post.dto';
 export const postContentMaxLength = 10000;
 
 @Entity('posts')
-export class Post extends Base {
+export class Post extends BaseEntity {
   @Index()
   @Column('varchar')
   title: string;

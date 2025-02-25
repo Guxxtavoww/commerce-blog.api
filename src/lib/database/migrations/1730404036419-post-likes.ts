@@ -6,7 +6,7 @@ import {
   TableIndex,
 } from 'typeorm';
 
-import { baseColumns } from '../entities/base-columns';
+import { baseColumns } from '../common/base-columns.common';
 
 export class PostLikes1730404036419 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

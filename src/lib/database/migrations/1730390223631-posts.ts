@@ -8,7 +8,7 @@ import {
 
 import { postContentMaxLength } from '../../../modules/post/entities/post.entity';
 
-import { baseColumns } from '../entities/base-columns';
+import { baseColumns } from '../common/base-columns.common';
 
 export class Posts1730390223631 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

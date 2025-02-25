@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
-import { baseColumns } from '../entities/base-columns';
+import { baseColumns } from '../common/base-columns.common';
 
 export class Users1726061378196 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

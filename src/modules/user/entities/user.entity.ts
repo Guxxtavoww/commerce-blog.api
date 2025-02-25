@@ -1,12 +1,12 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 
 import { Post } from '../../post/entities/post.entity';
-import { Base } from '../../../lib/database/entities/base.entity';
+import { BaseEntity } from '../../../lib/database/entities/base.entity';
 import { PostLike } from '../../post-like/entities/post-like.entity';
 import { PostComment } from '../../post-comment/entities/post-comment.entity';
 
 @Entity('users')
-export class User extends Base {
+export class User extends BaseEntity {
   @Index()
   @Column('varchar')
   user_name: string;

@@ -12,12 +12,12 @@ import {
   alias as postAlias,
 } from 'src/modules/post/entities/post.entity';
 import { User } from 'src/modules/user/entities/user.entity';
-import { Base } from 'src/lib/database/entities/base.entity';
+import { BaseEntity } from 'src/lib/database/entities/base.entity';
 
 export const postCommentContentMaxLength = 2500;
 
 @Entity('post-comments')
-export class PostComment extends Base {
+export class PostComment extends BaseEntity {
   @Index()
   @Column('uuid')
   commented_by_id: User['id'];

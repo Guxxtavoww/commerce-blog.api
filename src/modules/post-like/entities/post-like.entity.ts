@@ -1,13 +1,13 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 
 import { User } from '../../user/entities/user.entity';
-import { Base } from '../../../lib/database/entities/base.entity';
+import { BaseEntity } from '../../../lib/database/entities/base.entity';
 import { Post, alias as postAlias } from '../../post/entities/post.entity';
 
 import type { CreateLike } from '../dtos/create-like.dto';
 
 @Entity('post-likes')
-export class PostLike extends Base {
+export class PostLike extends BaseEntity {
   @Index()
   @Column('uuid')
   post_id: Post['id'];
