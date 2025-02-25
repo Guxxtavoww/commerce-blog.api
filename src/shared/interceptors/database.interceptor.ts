@@ -34,7 +34,10 @@ export class DataBaseInterceptor implements NestInterceptor {
         );
 
         if (error instanceof QueryFailedError) {
-          const driverError = error.driverError as any;
+          const driverError = error.driverError as
+            | { code?: string }
+            | undefined;
+
           const message = this.getFriendlyMessage(error);
 
           switch (driverError?.code) {
@@ -49,6 +52,11 @@ export class DataBaseInterceptor implements NestInterceptor {
               throw new ConflictException({
                 statusCode: 409,
                 message: 'Foreign key constraint violation',
+                detail: message,
+              });
+            case '23505':
+              throw new ConflictException({
+                message: 'Value already exists in the database',
                 detail: message,
               });
             default:
