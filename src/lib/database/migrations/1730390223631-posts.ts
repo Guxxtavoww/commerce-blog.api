@@ -11,10 +11,12 @@ import { postContentMaxLength } from '../../../modules/post/entities/post.entity
 import { baseColumns } from '../common/base-columns.common';
 
 export class Posts1730390223631 implements MigrationInterface {
+  private readonly tableName = 'posts' as const;
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'posts',
+        name: this.tableName,
         columns: [
           ...baseColumns,
           {
@@ -51,7 +53,7 @@ export class Posts1730390223631 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'posts',
+      this.tableName,
       new TableIndex({
         name: 'IDX_POSTS_TITLE',
         columnNames: ['title'],
@@ -59,7 +61,7 @@ export class Posts1730390223631 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'posts',
+      this.tableName,
       new TableIndex({
         name: 'IDX_POSTS_AUTHOR_ID',
         columnNames: ['author_id'],
@@ -67,7 +69,7 @@ export class Posts1730390223631 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'posts',
+      this.tableName,
       new TableIndex({
         name: 'IDX_POSTS_LIKES_COUNT',
         columnNames: ['likes_count'],
@@ -75,7 +77,7 @@ export class Posts1730390223631 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'posts',
+      this.tableName,
       new TableIndex({
         name: 'IDX_POSTS_COMMENTS_COUNT',
         columnNames: ['comments_count'],
@@ -83,7 +85,7 @@ export class Posts1730390223631 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'posts',
+      this.tableName,
       new TableForeignKey({
         columnNames: ['author_id'],
         referencedTableName: 'users',
@@ -94,13 +96,13 @@ export class Posts1730390223631 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('posts', 'FK_POSTS_AUTHOR_ID');
+    await queryRunner.dropForeignKey(this.tableName, 'FK_POSTS_AUTHOR_ID');
 
-    await queryRunner.dropIndex('posts', 'IDX_POSTS_TITLE');
-    await queryRunner.dropIndex('posts', 'IDX_POSTS_AUTHOR_ID');
-    await queryRunner.dropIndex('posts', 'IDX_POSTS_LIKES_COUNT');
-    await queryRunner.dropIndex('posts', 'IDX_POSTS_COMMENTS_COUNT');
+    await queryRunner.dropIndex(this.tableName, 'IDX_POSTS_TITLE');
+    await queryRunner.dropIndex(this.tableName, 'IDX_POSTS_AUTHOR_ID');
+    await queryRunner.dropIndex(this.tableName, 'IDX_POSTS_LIKES_COUNT');
+    await queryRunner.dropIndex(this.tableName, 'IDX_POSTS_COMMENTS_COUNT');
 
-    await queryRunner.dropTable('posts');
+    await queryRunner.dropTable(this.tableName);
   }
 }

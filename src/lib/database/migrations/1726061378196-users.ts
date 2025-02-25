@@ -3,10 +3,12 @@ import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 import { baseColumns } from '../common/base-columns.common';
 
 export class Users1726061378196 implements MigrationInterface {
+  private readonly tableName = 'users' as const;
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: this.tableName,
         columns: [
           ...baseColumns,
           {
@@ -43,7 +45,7 @@ export class Users1726061378196 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'users',
+      this.tableName,
       new TableIndex({
         name: 'IDX_USER_NAME',
         columnNames: ['user_name'],
@@ -51,7 +53,7 @@ export class Users1726061378196 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'users',
+      this.tableName,
       new TableIndex({
         name: 'IDX_USER_EMAIL',
         columnNames: ['user_email'],
@@ -59,7 +61,7 @@ export class Users1726061378196 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'users',
+      this.tableName,
       new TableIndex({
         name: 'IDX_PHONE_NUMBER',
         columnNames: ['phone_number'],
@@ -68,9 +70,9 @@ export class Users1726061378196 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropIndex('users', 'IDX_USER_NAME');
-    await queryRunner.dropIndex('users', 'IDX_USER_EMAIL');
-    await queryRunner.dropIndex('users', 'IDX_PHONE_NUMBER');
-    await queryRunner.dropTable('users');
+    await queryRunner.dropIndex(this.tableName, 'IDX_USER_NAME');
+    await queryRunner.dropIndex(this.tableName, 'IDX_USER_EMAIL');
+    await queryRunner.dropIndex(this.tableName, 'IDX_PHONE_NUMBER');
+    await queryRunner.dropTable(this.tableName);
   }
 }
