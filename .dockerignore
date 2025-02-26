@@ -1,6 +1,5 @@
-.env
-.env.*
-.data
-.github
-.git
+node_modules
 dist
+*.log
+*.md
+.git
