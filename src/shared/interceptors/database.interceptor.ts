@@ -34,9 +34,11 @@ export class DataBaseInterceptor implements NestInterceptor {
         );
 
         if (error instanceof QueryFailedError) {
-          const driverError = error.driverError as NullableValue<{
-            code: string;
-          }>;
+          const driverError = error.driverError as NullableValue<
+            {
+              code: string;
+            } & Error
+          >;
 
           const message = this.getFriendlyMessage(error);
 
