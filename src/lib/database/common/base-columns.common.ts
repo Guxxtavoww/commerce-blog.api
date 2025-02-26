@@ -1,5 +1,16 @@
 import type { TableColumnOptions } from 'typeorm';
 
+import type { BaseEntity } from '../entities/base.entity';
+import type { TimestampEntity } from '../entities/timestamp.entity';
+import type { BaseEntityWithIncrementalId } from '../entities/base-with-incremental-id.entity';
+
+interface MyTableColumnOptions extends Omit<TableColumnOptions, 'name'> {
+  readonly name:
+    | keyof TimestampEntity
+    | keyof BaseEntity
+    | keyof BaseEntityWithIncrementalId;
+}
+
 export const dateColumns = [
   {
     name: 'created_at',
@@ -13,7 +24,7 @@ export const dateColumns = [
     onUpdate: 'CURRENT_TIMESTAMP',
     isNullable: true,
   },
-] as const;
+] as MyTableColumnOptions[];
 
 export const baseColumns = [
   {
@@ -24,7 +35,7 @@ export const baseColumns = [
     default: 'uuid_generate_v4()',
   },
   ...dateColumns,
-] satisfies TableColumnOptions[];
+] as MyTableColumnOptions[];
 
 export const baseColumnsWithIncrementalId = [
   {
@@ -35,4 +46,4 @@ export const baseColumnsWithIncrementalId = [
     generationStrategy: 'increment',
   },
   ...dateColumns,
-] satisfies TableColumnOptions[];
+] as MyTableColumnOptions[];
