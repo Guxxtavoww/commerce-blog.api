@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    container_name: api
     env_file:
       - .env
     ports:
@@ -15,6 +16,7 @@ services:
   database:
     image: postgres
     restart: always
+    container_name: ${DATABASE_HOST}
     environment:
       POSTGRES_DB: ${DATABASE_DATABASE_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -29,4 +31,3 @@ services:
 networks:
   app-net:
     driver: bridge
-
