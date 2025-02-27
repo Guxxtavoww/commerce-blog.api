@@ -9,7 +9,7 @@ import {
 const pageSchema = optionalPaginationParamSchema.default(1);
 const limitSchema = optionalPaginationParamSchema
   .default(10)
-  .parse(integerNumberSchema.max(100, 'Max Limit is 100'));
+  .pipe(integerNumberSchema.max(100, 'Max Limit is 100'));
 
 export function createPaginationSchema<T extends ZodRawShape>(fields: T) {
   const paginationSchema = z.object({
