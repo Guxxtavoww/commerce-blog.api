@@ -9,6 +9,8 @@ import { tap } from 'rxjs/operators';
 import type { Observable } from 'rxjs';
 import type { Response, Request } from 'express';
 
+import { IS_DEV_ENV } from 'src/config/env.config';
+
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger(LoggingInterceptor.name);
@@ -42,7 +44,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
           this.logger.error(
             `Request Failed - Method: ${method} | URL: ${url} | Status: ${statusCode} | Time: ${executionTime}ms | Error: ${error.message}`,
-            error.stack,
+            IS_DEV_ENV ? error.stack : undefined,
           );
         },
       }),

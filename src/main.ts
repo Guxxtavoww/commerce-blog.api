@@ -6,6 +6,7 @@ import { corsConfig } from './config/cors.config';
 import { ENV_VARIABLES, IS_DEV_ENV } from './config/env.config';
 import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
 import { DataBaseInterceptor } from './shared/interceptors/database.interceptor';
+import { BadRequestInterceptor } from './shared/interceptors/bad-request.interceptor';
 
 async function bootstrap() {
   Logger.overrideLogger(
@@ -29,8 +30,9 @@ async function bootstrap() {
      * -----------------------------------------------------------------------------
      */
     app.useGlobalInterceptors(
-      new DataBaseInterceptor(),
+      new BadRequestInterceptor(),
       new LoggingInterceptor(),
+      new DataBaseInterceptor(),
     );
 
     if (IS_DEV_ENV) {

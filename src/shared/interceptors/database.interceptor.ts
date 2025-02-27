@@ -28,6 +28,17 @@ export class DataBaseInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError((error: unknown) => {
+        // Ignora erros que não são relacionados ao banco de dados
+        if (
+          !(
+            error instanceof QueryFailedError ||
+            error instanceof TypeORMError ||
+            error instanceof DatabaseError
+          )
+        ) {
+          return throwError(() => error); // Passa o erro adiante sem modificá-lo
+        }
+
         this.logger.error(
           `Database error occurred: ${error instanceof Error ? error.message : 'Unknown error'}`,
           error instanceof Error ? error.stack : undefined,
@@ -35,9 +46,7 @@ export class DataBaseInterceptor implements NestInterceptor {
 
         if (error instanceof QueryFailedError) {
           const driverError = error.driverError as NullableValue<
-            {
-              code: string;
-            } & Error
+            { code: string } & Error
           >;
 
           const message = this.getFriendlyMessage(error);
