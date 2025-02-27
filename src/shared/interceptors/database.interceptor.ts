@@ -54,14 +54,12 @@ export class DataBaseInterceptor implements NestInterceptor {
           switch (driverError?.code) {
             case 'ER_DUP_ENTRY': // MySQL/PostgreSQL: Chave duplicada
               throw new ConflictException({
-                statusCode: 409,
                 message: 'Duplicate entry detected',
                 detail: message,
               });
             case '23503': // PostgreSQL: Violação de chave estrangeira
             case 'ER_NO_REFERENCED_ROW': // MySQL: Violação de chave estrangeira
               throw new ConflictException({
-                statusCode: 409,
                 message: 'Foreign key constraint violation',
                 detail: message,
               });
@@ -72,7 +70,6 @@ export class DataBaseInterceptor implements NestInterceptor {
               });
             default:
               throw new InternalServerErrorException({
-                statusCode: 500,
                 message: 'Database operation failed',
                 detail: message,
               });
@@ -81,7 +78,6 @@ export class DataBaseInterceptor implements NestInterceptor {
 
         if (error instanceof DatabaseError) {
           throw new ConflictException({
-            statusCode: 409,
             message: error.message,
             detail: error.detail || 'An unexpected database error occurred',
           });
@@ -89,7 +85,6 @@ export class DataBaseInterceptor implements NestInterceptor {
 
         if (error instanceof TypeORMError) {
           throw new InternalServerErrorException({
-            statusCode: 500,
             message: 'Unexpected database error',
             detail: error.message,
           });
