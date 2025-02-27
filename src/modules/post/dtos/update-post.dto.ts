@@ -1,16 +1,15 @@
 import { z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+
+import { createZodDto } from 'src/utils/create-zod-dto.utils';
 
 import {
   stringSchema,
   optionalUrlStringSchema,
   optionalStringSchema,
 } from '../../../shared/schemas.shared';
-
-import { createNullableTransform } from '../../../utils/create-nullable-transform.util';
-
 import { postContentMaxLength } from '../entities/post.entity';
+import { createNullableTransform } from '../../../utils/create-nullable-transform.util';
 
 export const updatePostSchema = z.object({
   title: optionalStringSchema,

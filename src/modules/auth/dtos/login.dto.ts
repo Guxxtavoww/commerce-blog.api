@@ -1,6 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { ApiProperty } from '@nestjs/swagger';
+
+import { createZodDto } from 'src/utils/create-zod-dto.utils';
 
 import {
   emailStringSchema,

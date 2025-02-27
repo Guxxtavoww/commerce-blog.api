@@ -1,12 +1,12 @@
 import { z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
+import { createZodDto } from 'src/utils/create-zod-dto.utils';
 
 import {
   stringSchema,
   optionalUrlStringSchema,
 } from '../../../shared/schemas.shared';
-
 import { postContentMaxLength } from '../entities/post.entity';
 
 export const createPostSchema = z.object({

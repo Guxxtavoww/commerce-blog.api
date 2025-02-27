@@ -12,7 +12,6 @@ import { ApiTags } from '@nestjs/swagger';
 import type { User } from 'src/modules/user/entities/user.entity';
 import { Public } from '../../../shared/decorators/auth.decorator';
 import { UuidParam } from '../../../shared/decorators/uuid-param.decorator';
-import { ApiPaginationQuery } from '../../../shared/decorators/api-pagination-query.decorator';
 import { LoggedInUserIdDecorator } from '../../../shared/decorators/logged-in-user-id.decorator';
 
 import type { Post } from '../entities/post.entity';
@@ -27,7 +26,6 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Public()
-  @ApiPaginationQuery()
   @Get('paginate')
   paginate(
     @Query() queries: PaginatePostsDTO,

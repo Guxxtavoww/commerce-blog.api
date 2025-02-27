@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+
+import { createPaginatedZodDtoWithSorting } from 'src/utils/create-zod-dto.utils';
 
 import {
   optionalEmailStringSchema,
@@ -15,7 +16,7 @@ export const paginateUsersSchema = createPaginationSchema({
 
 export type PaginateUsersPayload = z.infer<typeof paginateUsersSchema>;
 
-export class PaginateUsersDTO extends createZodDto(paginateUsersSchema) {
+export class PaginateUsersDTO extends createPaginatedZodDtoWithSorting(paginateUsersSchema) {
   @ApiPropertyOptional({ type: String, description: 'Optional user name' })
   user_name?: string;
 

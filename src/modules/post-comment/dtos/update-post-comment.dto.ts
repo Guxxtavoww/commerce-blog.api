@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+
+import { createZodDto } from 'src/utils/create-zod-dto.utils';
 
 import { stringSchema } from '../../../shared/schemas.shared';
 import { createNullableTransform } from '../../../utils/create-nullable-transform.util';
-
 import { postCommentContentMaxLength } from '../entities/post-comment.entity';
 
 export const updatePostCommentSchema = z.object({

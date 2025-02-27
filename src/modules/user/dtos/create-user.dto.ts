@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
+import { createZodDto } from 'src/utils/create-zod-dto.utils';
 
 import {
   stringSchema,

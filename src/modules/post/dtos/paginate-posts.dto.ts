@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+
+import { createPaginatedZodDtoWithSorting } from 'src/utils/create-zod-dto.utils';
 
 import {
   optionalUuidSchema,
@@ -15,7 +16,7 @@ export const paginatePostsSchema = createPaginationSchema({
 
 export type PaginatePostsPayload = z.infer<typeof paginatePostsSchema>;
 
-export class PaginatePostsDTO extends createZodDto(paginatePostsSchema) {
+export class PaginatePostsDTO extends createPaginatedZodDtoWithSorting(paginatePostsSchema) {
   @ApiPropertyOptional()
   title?: string;
 
