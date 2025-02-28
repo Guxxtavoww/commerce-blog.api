@@ -6,7 +6,7 @@ import {
   PaginationBaseWithSortingDTO,
 } from 'src/shared/dtos/pagination-base.dto';
 
-function createPaginatedZodDto<
+function createPaginatedZodDTO<
   TOutput = any,
   TDef extends ZodTypeDef = ZodTypeDef,
   TInput = TOutput,
@@ -43,7 +43,7 @@ function createPaginatedZodDTOWithSorting<
 const createZodDTO = createZodDto;
 
 export {
-  createPaginatedZodDto,
+  createPaginatedZodDTO,
   createPaginatedZodDTOWithSorting,
   createZodDTO,
 };
