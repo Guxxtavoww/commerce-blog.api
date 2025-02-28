@@ -10,7 +10,7 @@ function createPaginatedZodDTO<
   TOutput = any,
   TDef extends ZodTypeDef = ZodTypeDef,
   TInput = TOutput,
->(schema: ZodSchema<TOutput, TDef, TInput>) {
+>(schema: ZodSchema<TOutput, TDef, TInput>): ZodDto<TOutput, TDef, TInput> {
   class AugmentedZodDto extends PaginationBaseDTO {
     public static isZodDto = true;
     public static schema = schema;
@@ -27,7 +27,7 @@ function createPaginatedZodDTOWithSorting<
   TOutput = any,
   TDef extends ZodTypeDef = ZodTypeDef,
   TInput = TOutput,
->(schema: ZodSchema<TOutput, TDef, TInput>) {
+>(schema: ZodSchema<TOutput, TDef, TInput>): ZodDto<TOutput, TDef, TInput> {
   class AugmentedZodDto extends PaginationBaseWithSortingDTO {
     public static isZodDto = true;
     public static schema = schema;
