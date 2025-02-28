@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { createZodDto } from 'src/utils/create-zod-dto.utils';
+import { createZodDTO } from 'src/utils/create-zod-dto.utils';
 
 import {
   emailStringSchema,
@@ -15,7 +15,7 @@ export const loginSchema = z.object({
 
 export type LoginPayload = z.infer<typeof loginSchema>;
 
-export class LoginDTO extends createZodDto(loginSchema) {
+export class LoginDTO extends createZodDTO(loginSchema) {
   @ApiProperty({
     description: 'The email of the user',
     example: 'marcellosamura@gmail.com',

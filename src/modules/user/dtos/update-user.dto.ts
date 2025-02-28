@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { createZodDto } from 'src/utils/create-zod-dto.utils';
+import { createZodDTO } from 'src/utils/create-zod-dto.utils';
 
 import {
   optionalStringSchema,
@@ -19,7 +19,7 @@ export const updateUserSchema = z.object({
 
 export type UpdateUserPayload = z.infer<typeof updateUserSchema>;
 
-export class UpdateUserDTO extends createZodDto(updateUserSchema) {
+export class UpdateUserDTO extends createZodDTO(updateUserSchema) {
   @ApiPropertyOptional({ type: String, description: 'Optional user name' })
   user_name?: string;
 

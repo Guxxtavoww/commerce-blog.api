@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { createZodDto } from 'src/utils/create-zod-dto.utils';
+import { createZodDTO } from 'src/utils/create-zod-dto.utils';
 
 import {
   uuidSchema,
@@ -18,7 +18,7 @@ export const createdPostCommentSchema = z.object({
 
 export type CreatePostCommentPayload = z.infer<typeof createdPostCommentSchema>;
 
-export class CreatePostCommentDTO extends createZodDto(
+export class CreatePostCommentDTO extends createZodDTO(
   createdPostCommentSchema,
 ) {
   @ApiProperty()

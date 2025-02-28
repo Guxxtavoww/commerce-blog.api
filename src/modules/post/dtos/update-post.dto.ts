@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { createZodDto } from 'src/utils/create-zod-dto.utils';
+import { createZodDTO } from 'src/utils/create-zod-dto.utils';
 
 import {
   stringSchema,
@@ -19,7 +19,7 @@ export const updatePostSchema = z.object({
 
 export type UpdatePostPayload = z.infer<typeof updatePostSchema>;
 
-export class UpdatePostDTO extends createZodDto(updatePostSchema) {
+export class UpdatePostDTO extends createZodDTO(updatePostSchema) {
   @ApiPropertyOptional({
     example: 'Título 1',
   })

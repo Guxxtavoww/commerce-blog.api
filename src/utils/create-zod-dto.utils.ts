@@ -23,7 +23,7 @@ function createPaginatedZodDto<
   return AugmentedZodDto as unknown as ZodDto<TOutput, TDef, TInput>;
 }
 
-function createPaginatedZodDtoWithSorting<
+function createPaginatedZodDTOWithSorting<
   TOutput = any,
   TDef extends ZodTypeDef = ZodTypeDef,
   TInput = TOutput,
@@ -40,8 +40,10 @@ function createPaginatedZodDtoWithSorting<
   return AugmentedZodDto as unknown as ZodDto<TOutput, TDef, TInput>;
 }
 
+const createZodDTO = createZodDto;
+
 export {
   createPaginatedZodDto,
-  createPaginatedZodDtoWithSorting,
-  createZodDto,
+  createPaginatedZodDTOWithSorting,
+  createZodDTO,
 };

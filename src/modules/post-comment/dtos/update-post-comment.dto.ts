@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { createZodDto } from 'src/utils/create-zod-dto.utils';
+import { createZodDTO } from 'src/utils/create-zod-dto.utils';
 
 import { stringSchema } from '../../../shared/schemas.shared';
 import { createNullableTransform } from '../../../utils/create-nullable-transform.util';
@@ -15,7 +15,7 @@ export const updatePostCommentSchema = z.object({
 
 export type UpdatePostCommentPayload = z.infer<typeof updatePostCommentSchema>;
 
-export class UpdatePostCommentDTO extends createZodDto(
+export class UpdatePostCommentDTO extends createZodDTO(
   updatePostCommentSchema,
 ) {
   @ApiPropertyOptional()
